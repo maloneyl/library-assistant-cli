@@ -74,6 +74,7 @@ DEPENDENCIES
   addressable
   dotenv
   goodreads
+  hashie
   nokogiri
   pry-byebug
   rspec

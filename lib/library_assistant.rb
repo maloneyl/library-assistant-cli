@@ -1,16 +1,19 @@
 require_relative "library_assistant/goodreads"
+require_relative "library_assistant/goodreads/book"
 require_relative "library_assistant/islington_library"
 
 module LibraryAssistant
-  def self.recommend_a_book
-    book = Goodreads.books.each do |book|
-      title = book.book.title
-      author = book.book.authors.author.name
+  def self.grab_a_book
+    found = false
 
-      result = IslingtonLibrary.search(title: title, author: author)
-      break result if result
+    result = Goodreads.get_books.each do |goodreads_book|
+      book = IslingtonLibrary.search(title: goodreads_book.title, author: goodreads_book.author)
+      if book
+        found = true
+        break book
+      end
     end
 
-    book
+    found ? result : nil
   end
 end

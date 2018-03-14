@@ -1,11 +1,14 @@
 require "goodreads"
 require "dotenv/load"
+require_relative "./goodreads/book"
 
 module LibraryAssistant
   class Goodreads
     class << self
-      def books
-        client.shelf(ENV["GOODREADS_USER_ID"], ENV["GOODREADS_TO_READ_SHELF_NAME"]).books
+      def get_books
+        client.shelf(ENV["GOODREADS_USER_ID"], ENV["GOODREADS_SHELF_NAME"]).books.map do |book_data|
+          Book.new(book_data)
+        end
       end
 
       private
