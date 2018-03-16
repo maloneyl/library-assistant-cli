@@ -5,6 +5,8 @@ module LibraryAssistant
     class QueryResult
       def initialize(parsed_query_result_xml)
         @doc = parsed_query_result_xml
+
+        filter_to_books_only
       end
 
       def book
@@ -20,8 +22,18 @@ module LibraryAssistant
 
       private
 
+      def filter_to_books_only
+        return unless any?
+
+        @doc.xpath("//rss:item/dc:format").each do |node|
+          unless node.text == "Book"
+            node.parent.remove
+          end
+        end
+      end
+
       def any?
-        @doc.xpath("//rss:channel/os:totalResults").text.to_i > 0
+        @doc.xpath("//rss:item").any?
       end
 
       def newest_item
