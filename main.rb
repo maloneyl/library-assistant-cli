@@ -1,5 +1,5 @@
 require "pry-byebug"
-require_relative "lib/library_assistant"
+require "library_assistant"
 
 book = LibraryAssistant.grab_a_book
 
